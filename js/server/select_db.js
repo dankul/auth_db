@@ -6,32 +6,41 @@ var connection = mysql.createConnection({
     database : 'dankul'
 });
 
-connection.connect();
+function Response(){
+ var data = {};
+ var query = function (data) {
+  connection.connect();
+        
+  connection.query('SELECT * FROM users', function(error, results, fields){
+	  //console.log(results.length);
+    if (error) throw error;
+        
+   for (var i in results) { 
+	var userData = {};
 
-connection.query('SELECT * FROM users', function(error, results, fields, getResponse){
-	var response = {};
+    for(var k in results[i]){	
+		userData[k] = results[i][k];
+    };
 	
-	if (error) throw error;
-	
-	for (var i in results) {
-		for(var k in results[i]){
-			console.log(results[i][k]);
-			response[k] = results[i][k];
-		};		
-	};	
-	
-	getResponse(response);
-});
+	data[i] = userData;
+   };
+  });
+        
+  connection.end();
+ };
 
-connection.end();
-
-function getResponse(data){
-	
-	
-	console.log(data);
-	
-	return data;
+ return {
+  setData: function (data) {
+   query(data);
+  },
+  get: function () {
+   this.setData(data);
+   
+   return data;
+  }
+ };
 };
 
+var resp = new Response();
 
-getResponse();
+module.exports.resp = resp.get();

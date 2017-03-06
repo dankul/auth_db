@@ -1,38 +1,35 @@
 $(function(){				
                 $('#select_link').click(function(e){
-                    e.preventDefault();
-                    console.log('select_link clicked');
-                    
-                     /*$.ajax({
-                        dataType: 'jsonp',
-                        data: "data=yeah",						
-                        jsonp: 'callback',
-                        url: 'http://localhost:3000/endpoint?callback=?',						
-                        success: function(data) {
-                            console.log('success');
-                            console.log(JSON.stringify(data));
-                        }
-                    });*/
-					var data = {};
-					data.title = "title";
-					data.message = "message";
-					
+                    //e.preventDefault();
+					var type = 'GET',
+						requestData = 'hi',
+						contentType = 'application/json',
+						url = 'localhost:3000/api',
+						callback = publishUser;
+						
+					server_transport(type, contentType, url);
+                });
+				
+				function publishUser(data) {
+				//<div i<div id="[0-2]">
+				//	<div id="[0-2]-email">[mail]</div>
+				//	<div id="[0-2]-pwd">[pass]</div>
+				//</div>
+				
+					console.log(data);
+				};
+				
+				function server_transport(type, requestData, contentType, url) {
+				//console.log(type, requestData, contentType, url, callback);
 					$.ajax({
-						type: 'GET',
-						data: JSON.stringify(data),
-				        contentType: 'application/json',
-                        url: 'http://localhost:3000/api',						
+						type: type,
+						data: requestData,
+				        contentType: contentType,
+                        url: url,						
                         success: function(data) {
-                            console.log('success');
-                            console.log(JSON.stringify(data));
+							console.log(data);
+							//callback(data);
                         }
                     });
-					/*$.ajax('http://localhost:3000/endpoint', {
-					        type: 'POST',
-					        data: JSON.stringify(data),
-					        contentType: 'application/json',
-					        success: function() { console.log('success');},
-					        error  : function() { console.log('error');}
-					});*/
-                });				
+				}
             });
