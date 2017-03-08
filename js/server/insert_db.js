@@ -1,13 +1,31 @@
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'dankul',
-    password : 'Kbbsrvrx12',
-    database : 'dankul'
-});
+function store (data){
+	var mysql = require('mysql');
+	var status = {
+		insert: ''
+	};
+	var connection = mysql.createConnection({
+		host     : 'localhost',
+		user     : 'dankul',
+		password : 'Kbbsrvrx12',
+		database : 'dankul'
+	});
+	
+	connection.connect();
+	
+	var userData = JSON.parse(data);
+	
+	connection.query('INSERT INTO users SET ?', userData, function(err, result) {
+		if(result){
+			  status.insert = result
+		};
+		if(err){
+			  status.insert = err
+		};
+	});
 
-connection.connect();
+	connection.end();
+	
+	return status; 
+};
 
-connection.query('INSERT INTO users (mail, pass) VALUES(\'gron005@i.ua\', \'kokloku\')');
-
-connection.end();
+module.export.store = store(data);

@@ -1,29 +1,57 @@
 <html>
 	<head>
 		<title>jsonp test</title>
-		<script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>		
+		<script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>	
+		<!-- <script src="jquery.md5.js"></script> -->
 		<script type="text/javascript">
-            $(function(){				
-                $('#select_link').click(function(e){
-                    //e.preventDefault();
+			$(function(){				
+				$('#select_link').click(function(e){
 					
-					$.ajax({
-						type: 'GET',
-						data: '',
-				        contentType: 'application/json',
-                        url: 'http://localhost:3000/api',						
-                        success: function(data) {
-							publishUser(data);
-                        }
-                    });
-					var type = 'GET',
-						requestData = 'hi',
-						contentType = 'application/json',
-						url = 'http://localhost:3000/api',
-						callback = publishUser;
+					var type = 'GET';
+					var	contentType = 'application/json';
+					var requestData ='';
+					var	url = 'http://localhost:3000/api';
+					var	callback = publishUser;
 						
-					//server_transport(type, contentType, url, callback);
-                });
+					server_transport(type, requestData, contentType, url, callback);
+				});
+				
+				$('#insert_user').click(function(e){
+					var userData = {
+						mail: '',
+						pass: ''
+					};
+					var userPass = document.getElementById('password').value;
+					var userMail = document.getElementById('mail').value;
+					//var encodedPass = $.md5(userPass);
+					
+					
+					
+					userData.mail = userMail;
+					userData.pass = userPass;
+					
+					var type = 'PUT';
+					var	contentType = 'application/json';
+					var requestData = JSON.stringify(userData);
+					
+					var	url = 'http://localhost:3000/insert';
+					var	callback = confrimAddNewUser;
+					
+					server_transport(type, requestData, contentType, url, callback);
+				});
+				
+				function server_transport(type, requestData, contentType, url, callback) {
+
+					$.ajax({
+						type: type,
+						data: requestData,
+						contentType: contentType,
+						url: url,						
+						success: function(data) {
+							callback(data);
+						}
+					});
+				};
 				
 				function publishUser(data) {
 					
@@ -33,28 +61,26 @@
 					for(var id in data){
 						newDiv += '<div id="id_' + id + '">' + '<div id="mail_' + id + '">' + '<p>' + data[id].mail + '</p>' + '</div>' + '<div id="pass_' + id + '">' + 
 						'<p>' + data[id].pass + '</p>' + '</div>' + '</div>';
-					}
+					};
 					
 					userList.innerHTML = newDiv;
 				};
 				
-				function server_transport(type, requestData, contentType, url, callback) {
-				//console.log(type, requestData, contentType, url, callback);
-					$.ajax({
-						type: type,
-						data: requestData,
-				        contentType: contentType,
-                        url: url,						
-                        success: function(data) {
-							callback(data);
-                        }
-                    });
-				}
-            });
-        </script>
+				
+				function confrimAddNewUser(data){
+					console.log(data);
+				};
+			});
+		</script>
     </head>
     <body>
-        <div id="select_div"><a href="#" id="select_link">Test</a></div>
+		<div class = "log">
+			<p><strong>Mail:</strong> <input maxlength="25" size="40" id="mail"></p>
+		</div>
+		<div class = "pass">
+			<p><strong>Password:</strong> <input type="password" maxlength="25" size="40" id="password"></p>
+		</div>
+		<div><button href="#" id="insert_user" class="button">Create</button><button href="#" id="select_link">Select</button></div>
 			<div id="users-list"></div>
     </body>
 </html>
