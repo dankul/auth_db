@@ -1,8 +1,6 @@
 function store (data){
 	var mysql = require('mysql');
-	var status = {
-		insert: ''
-	};
+	var status = {};
 	var connection = mysql.createConnection({
 		host     : 'localhost',
 		user     : 'dankul',
@@ -12,20 +10,29 @@ function store (data){
 	
 	connection.connect();
 	
-	var userData = JSON.parse(data);
+	var query = connection.query('INSERT INTO users SET ?', data);
 	
-	connection.query('INSERT INTO users SET ?', userData, function(err, result) {
-		if(result){
-			  status.insert = result
-		};
-		if(err){
-			  status.insert = err
-		};
-	});
+		query.on('error', function(err) {
+			try {
+				throw err;
+			}
+			catch (e) {
+				console.log(e.code);
+				status.insert = e.code;
+				
+				return {insert: e.code};
+			}
+		});	
 
+		query.on('result', function(row) {
+			status.insert = row.post_title;
+		});
+	
 	connection.end();
 	
-	return status; 
+	return {insert: "ok"};
+	
+	 
 };
 
-module.export.store = store(data);
+module.exports = store;

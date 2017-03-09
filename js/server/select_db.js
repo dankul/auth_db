@@ -12,7 +12,7 @@ function Response(){
   connection.connect();
         
   connection.query('SELECT * FROM users', function(error, results, fields){
-	  //console.log(results.length);
+	  
     if (error) throw error;
         
    for (var i in results) { 
@@ -20,12 +20,13 @@ function Response(){
 
     for(var k in results[i]){	
 		userData[k] = results[i][k];
+		
     };
 	
 	data[i] = userData;
    };
   });
-        
+     
   connection.end();
  };
 

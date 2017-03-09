@@ -2,76 +2,8 @@
 	<head>
 		<title>jsonp test</title>
 		<script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>	
-		<!-- <script src="jquery.md5.js"></script> -->
-		<script type="text/javascript">
-			$(function(){				
-				$('#select_link').click(function(e){
-					
-					var type = 'GET';
-					var	contentType = 'application/json';
-					var requestData ='';
-					var	url = 'http://localhost:3000/api';
-					var	callback = publishUser;
-						
-					server_transport(type, requestData, contentType, url, callback);
-				});
-				
-				$('#insert_user').click(function(e){
-					var userData = {
-						mail: '',
-						pass: ''
-					};
-					var userPass = document.getElementById('password').value;
-					var userMail = document.getElementById('mail').value;
-					//var encodedPass = $.md5(userPass);
-					
-					
-					
-					userData.mail = userMail;
-					userData.pass = userPass;
-					
-					var type = 'PUT';
-					var	contentType = 'application/json';
-					var requestData = JSON.stringify(userData);
-					
-					var	url = 'http://localhost:3000/insert';
-					var	callback = confrimAddNewUser;
-					
-					server_transport(type, requestData, contentType, url, callback);
-				});
-				
-				function server_transport(type, requestData, contentType, url, callback) {
-
-					$.ajax({
-						type: type,
-						data: requestData,
-						contentType: contentType,
-						url: url,						
-						success: function(data) {
-							callback(data);
-						}
-					});
-				};
-				
-				function publishUser(data) {
-					
-					var userList = document.getElementById('users-list');
-					var newDiv = '';
-					
-					for(var id in data){
-						newDiv += '<div id="id_' + id + '">' + '<div id="mail_' + id + '">' + '<p>' + data[id].mail + '</p>' + '</div>' + '<div id="pass_' + id + '">' + 
-						'<p>' + data[id].pass + '</p>' + '</div>' + '</div>';
-					};
-					
-					userList.innerHTML = newDiv;
-				};
-				
-				
-				function confrimAddNewUser(data){
-					console.log(data);
-				};
-			});
-		</script>
+		<script src="jquery.md5.js"></script>
+		<script src="js/client/main.js" type="text/javascript"></script>
     </head>
     <body>
 		<div class = "log">
