@@ -10,6 +10,24 @@ $(function(){
 					server_transport(type, requestData, contentType, url, callback);
 				});
 				
+				$('#auth_me').click(function(e){
+					console.log("auth");
+					var userData ={};
+					var userPass = document.getElementById('password').value;
+					var userMail = document.getElementById('mail').value;
+					var encodedPass = $.md5(userPass);
+					
+					userData.mail = userMail;
+					userData.pass = encodedPass;
+;					
+					var type = 'GET';
+					var	contentType = 'application/json';
+					var requestData = 'mail=' + userData.mail + '&pass=' + userData.pass;
+					var	url = 'http://localhost:3000/auth';
+					var	callback = publishUser;
+						
+					server_transport(type, requestData, contentType, url, callback);
+				});
 				$('#insert_user').click(function(e){
 					var userData = {
 						mail: '',

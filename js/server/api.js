@@ -19,6 +19,16 @@ app.get('/api', cors(corsOptions), function(req, res, next){
 	res.json(select_db.resp);
 });
 
+app.get('/auth', cors(corsOptions), function(req, res, next){
+	var Login = require('./auth_db');
+	var login = new Login();
+	var respBody = req.query;
+	
+	login.get(respBody, function(response) {
+		res.json(response);
+	});
+});
+
 app.put('/insert', cors(corsOptions), function(req, res, next){
 	var insert_db = require('./insert_db');
 	
